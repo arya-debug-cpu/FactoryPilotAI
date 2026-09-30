@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   FactoryPilot AI design tokens
+   Surface: powder-coated charcoal steel under work lighting.
+   Signal:  dark green -> professional emerald. Warnings amber, faults red.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-ink: #0a0d0c;
+  --color-panel: #111614;
+  --color-raised: #171d1a;
+  --color-line: #263029;
+  --color-line-soft: #1b2320;
+  --color-fg: #e9efeb;
+  --color-muted: #96a29c;
+  --color-dim: #6c7873;
+  --color-forest: #0b3b2e;
+  --color-signal: #12a66a;
+  --color-led: #34d399;
+  --color-amber: #e8a020;
+  --color-crit: #d9422b;
+
+  --font-sans: "IBM Plex Sans", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+html {
+  background-color: var(--color-ink);
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-forest);
+  color: #fff;
+}
+
+/* engraved label ---------------------------------------------------------- */
+.engrave {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* hairline grid texture used behind dense panels -------------------------- */
+.grid-etch {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.noise::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* scrollbars -------------------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2c3833 transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: #2c3833;
+  border: 3px solid var(--color-ink);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* motion: machined precision --------------------------------------------- */
+@keyframes fp-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fp-draw {
+  from {
+    stroke-dashoffset: var(--fp-len, 1200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes fp-led {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes fp-shimmer {
+  0% {
+    background-position: -420px 0;
+  }
+  100% {
+    background-position: 420px 0;
+  }
+}
+
+.rise {
+  animation: fp-rise 0.42s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+.draw {
+  stroke-dasharray: var(--fp-len, 1200);
+  animation: fp-draw 1.1s cubic-bezier(0.3, 0.8, 0.35, 1) both;
+}
+.led-pulse {
+  animation: fp-led 1.6s ease-in-out infinite;
+}
+.skeleton {
+  background: linear-gradient(90deg, #151b18 0%, #1e2723 45%, #151b18 90%);
+  background-size: 420px 100%;
+  animation: fp-shimmer 1.3s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
